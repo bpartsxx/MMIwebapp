@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Matchbox Incident</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://unpkg.com/@barba/core"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
+
+</head>
+
+<body>
+    <!-- <div class="video-background">
+    <video autoplay muted loop playsinline>
+        <source src="{{ url_for('static', filename='staticnoir.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video> -->/
+      <div id="ripple-bg"></div>
+      <canvas id="three-bg"></canvas> 
+    </div>
+    <div id="atmosphere-overlay">
+        <!-- We’ll inject fog, flickering lights, and silhouettes here -->
+        <div class="fog"></div>
+        <div class="flicker"></div>
+        <div class="silhouette"></div> 
+        
+    </div>
+    
+    <div id="transition-overlay"></div>
+    <div id="wrapper" data-barba="wrapper">
+        <main data-barba="container" data-barba-namespace="{{ request.path }}">
+            {% block content %}{% endblock %}
+            <div class="glitch-transition"></div>
+            <div id="transition-overlay"></div>
+        </main>
+    </div>
+    <div id="sigil-container">
+        <div class="sigil" data-page="about" data-title="The Origin" data-desc="From static and smoke, the tale began. A spark, a name, a match struck against eternity.">✦</div>
+        <div class="sigil" data-page="music" data-title="The Echo" data-desc="Sounds of ruin and rebirth ripple outward — echoes of dreams that never settled, only stirred.">⚝</div>
+        <div class="sigil" data-page="shows" data-title="The Reverie" data-desc="Where moments collapse into haze — time folds, lights blur, and we dissolve into memory.">✺</div>
+        <div class="sigil" data-page="contact" data-title="The Sanctuary" data-desc="A place beyond the storm. Silence hums here. You made it. You are seen.">⚚</div>
+    </div>
+    <!-- <div id="divine-whisper">Whispers in the static...</div> -->
+    <script type="module" src="/static/js/three_interactive_bg.js"></script>
+    <!-- <script src="{{ url_for('static', filename='js/three_background.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/threejs_scene.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/gsap_animations.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/three_effects.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/barba_transitions.js') }}"></script>
+   
+   <!--           Navbar           -->
+   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const sigils = document.querySelectorAll(".sigil");
+        const altSymbols = ["☽", "☉", "☾", "♄", "☿", "✙", "𖤐"];
+    
+        const normalText = document.querySelector(".glow-text .normal");
+        const phantomText = document.querySelector(".glow-text .phantom");
+        const paragraph = document.querySelector(".hero p");
+        
+        const originalText = normalText.textContent;
+        const originalParagraph = paragraph.textContent;
+    
+        const fadeText = (text) => {
+            gsap.to([normalText, phantomText], {
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => {
+                    normalText.textContent = text;
+                    phantomText.textContent = text;
+                    gsap.to([normalText, phantomText], { opacity: 1, duration: 0.3 });
+                }
+            });
+        };
+    
+        const fadeParagraph = (text) => {
+            gsap.to(paragraph, {
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => {
+                    paragraph.textContent = text;
+                    gsap.to(paragraph, { opacity: 1, duration: 0.3 });
+                }
+            });
+        };
+    
+        const sigilContainer = document.getElementById("sigil-container");
+    
+        sigils.forEach(sigil => {
+            const newText = sigil.dataset.title;
+            const newDesc = sigil.dataset.desc;
+            const originalSymbol = sigil.innerHTML;
+    
+            // Title and paragraph update on hover
+            sigil.addEventListener("mouseenter", () => {
+                fadeText(newText);
+                fadeParagraph(newDesc);
+                sigil.innerHTML = altSymbols[Math.floor(Math.random() * altSymbols.length)];
+            });
+    
+            sigil.addEventListener("mouseleave", () => {
+                sigil.innerHTML = originalSymbol;
+                // Don't revert text here — will handle on container leave
+            });
+    
+            // Touch+hold for mobile
+            let touchTimer;
+            sigil.addEventListener("touchstart", (e) => {
+                e.preventDefault();
+                touchTimer = setTimeout(() => {
+                    fadeText(newText);
+                    fadeParagraph(newDesc);
+                }, 300);
+            });
+    
+            sigil.addEventListener("touchend", () => {
+                clearTimeout(touchTimer);
+                fadeText(originalText);
+                fadeParagraph(originalParagraph);
+            });
+    
+            sigil.addEventListener("touchcancel", () => {
+                clearTimeout(touchTimer);
+                fadeText(originalText);
+                fadeParagraph(originalParagraph);
+            });
+    
+            // Random positioning
+            sigil.style.top = `${Math.random() * 70 + 20}%`;
+            sigil.style.left = `${Math.random() * 90}%`;
+    
+            // Navigation
+            sigil.addEventListener('click', () => {
+                const page = sigil.dataset.page;
+                window.location.href = `/${page}`;
+            });
+        });
+    
+        // Revert title and paragraph only when fully leaving sigil area
+        const revertTexts = () => {
+            fadeText(originalText);
+            fadeParagraph(originalParagraph);
+        };
+    
+        sigilContainer.addEventListener("mouseleave", revertTexts);
+    });
+
+    barba.init({
+    transitions: [{
+        name: 'glitch-transition',
+        async leave(data) {
+            const glitch = document.querySelector('.glitch-transition');
+            glitch.style.opacity = '1';
+
+            // Animate sigils (if any exist globally)
+            document.querySelectorAll('.sigil').forEach(sigil => {
+                sigil.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
+                sigil.style.transition = 'transform 0.3s ease';
+            });
+
+            // Ambient whoosh
+            const whoosh = new Audio('/static/sfx/whoosh.mp3');
+            whoosh.play();
+
+            await new Promise(resolve => setTimeout(resolve, 400));
+            data.current.container.remove();
+        },
+        async enter(data) {
+            const glitch = document.querySelector('.glitch-transition');
+            glitch.style.opacity = '0';
+        }
+    }]
+});
+    </script>
+    
+</body>
+</html>

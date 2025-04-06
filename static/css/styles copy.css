@@ -1,0 +1,97 @@
+body {
+    background: black;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.glow-text {
+    font-family: 'Monoton', cursive;
+    font-size: 4rem;
+    text-transform: uppercase;
+    color: #ff1177;
+    text-align: center;
+    
+    /* Neon Glow Effect */
+    text-shadow: 
+        0 0 5px #ff1177,
+        0 0 10px #ff1177,
+        0 0 20px #ff1177,
+        0 0 40px rgba(255, 17, 119, 0.8),
+        0 0 60px rgba(255, 17, 119, 0.6),
+        0 0 80px rgba(255, 17, 119, 0.4);
+    
+    animation: flicker 1.5s infinite alternate;
+}
+
+/* Flickering Effect */
+@keyframes flicker {
+    0% { opacity: 1; text-shadow: 0 0 10px #ff1177, 0 0 20px #ff1177, 0 0 40px rgba(255, 17, 119, 0.8); }
+    50% { opacity: 0.8; text-shadow: 0 0 8px #ff1177, 0 0 16px #ff1177, 0 0 30px rgba(255, 17, 119, 0.6); }
+    100% { opacity: 1; text-shadow: 0 0 10px #ff1177, 0 0 20px #ff1177, 0 0 40px rgba(255, 17, 119, 0.8); }
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+#transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(0,0,0,1) 10%, rgba(255,255,255,0) 90%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.floating {
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(255,255,255,0.5);
+    animation: floatAnim 4s ease-in-out infinite;
+}
+
+@keyframes floatAnim {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+#particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+    opacity: 0;
+}
+
+.glow-text:hover {
+    animation: glitch 0.2s steps(2, end) infinite alternate;
+    cursor: none
+}
+
+@keyframes glitch {
+    0% { transform: translateX(2px); }
+    100% { transform: translateX(-2px); }
+}

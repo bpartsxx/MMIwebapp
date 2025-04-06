@@ -1,0 +1,116 @@
+<!-- templates/about.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Origin – Midnight Matchbox Incident</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/punkkid.css') }}">
+</head>
+<body>
+    <div class="background-canvas"></div>
+    <canvas id="sigil-canvas"></canvas>
+
+    <div class="glow-text">
+        <span class="normal">The Origin</span>
+        <span class="phantom">The Origin</span>
+    </div>
+
+    <div class="subtext about-paragraph">
+        <p>Before the noise, there was silence. Before the chaos, the spark.</p>
+        <p>We were forged in a crucible of fading frequencies and distant transmissions.</p>
+        <p>This is where the match was struck.</p>
+    </div>
+
+    <div class="sigil back-home" data-page="/">
+        ☄ Return
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- <script src="{{ url_for('static', filename='js/three_scene.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/gsap_animations.js') }}"></script>
+    <script>
+        document.querySelector(".back-home").addEventListener("click", () => {
+            gsap.to("body", {
+                opacity: 0,
+                duration: 1,
+                onComplete: () => window.location.href = "/"
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById("sigil-canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const sigils = ["☽", "✦", "✧", "𖤐", "♄", "⚚", "☿", "✺"];
+    const particles = [];
+
+    for (let i = 0; i < 25; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: 35 + Math.random() * 10,
+            symbol: sigils[Math.floor(Math.random() * sigils.length)],
+            speedX: (Math.random() - 0.5) * 0.3,
+            speedY: (Math.random() - 0.5) * 0.3,
+            glow: 0
+        });
+    }
+
+    let mouse = { x: null, y: null };
+
+    canvas.addEventListener("mousemove", (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    function drawSigil(sigil) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.font = `${sigil.radius}px 'Punk Kid', serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const dist = Math.hypot(mouse.x - sigil.x, mouse.y - sigil.y);
+        const hoverZone = 100;
+        const glowAmount = dist < hoverZone ? 0.6 : 0.15;
+
+        ctx.shadowColor = "rgba(255, 200, 255, 1)";
+        ctx.shadowBlur = glowAmount * 100;
+        ctx.fillStyle = `rgba(255, 255, 255, ${glowAmount})`;
+
+        ctx.fillText(sigil.symbol, sigil.x, sigil.y);
+        ctx.restore();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let sigil of particles) {
+            sigil.x += sigil.speedX;
+            sigil.y += sigil.speedY;
+
+            // Bounce at edges
+            if (sigil.x < 0 || sigil.x > canvas.width) sigil.speedX *= -1;
+            if (sigil.y < 0 || sigil.y > canvas.height) sigil.speedY *= -1;
+
+            drawSigil(sigil);
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+});
+
+    </script>
+</body>
+</html>

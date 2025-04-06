@@ -1,0 +1,29 @@
+.about-paragraph {
+    max-width: 800px;
+    margin: 20vh auto;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    line-height: 1.6;
+    padding: 0 2rem;
+}
+
+.back-home {
+    position: fixed;
+    bottom: 3vh;
+    right: 4vw;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+}
+
+.back-home:hover {
+    opacity: 1;
+    text-shadow: 0 0 10px white;
+}

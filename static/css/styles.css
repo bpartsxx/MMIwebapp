@@ -1,0 +1,468 @@
+body {
+    background: rgba(0, 0, 0, 0.904);
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    overflow: hidden;
+    cursor: url('/static/images/gothcursor.png') 16 16, auto;
+}
+
+@font-face {
+    font-family: 'Simbiot';
+    src: url('/static/fonts/NEONIZED.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* DEEPEST LAYER - Video Backgrounds */
+#bg-video,
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    filter: blur(4px) brightness(0.5);
+    pointer-events: none;
+    z-index: -10;
+}
+
+/* Three.js Background Layer */
+#three-bg,
+#noir-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    display: block;
+}
+
+/* City Ripple Silhouette */
+#ripple-bg {
+    background: url('/static/images/silhouette_city.png') center center / cover no-repeat;
+    filter: blur(4px) brightness(0.4);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 1;
+}
+
+/* Main Centered Hero Text */
+.hero {
+    position: absolute;
+    font-family: 'Space Mono', monospace;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+}
+
+/* Glow Text Layers */
+.glow-text {
+    position: relative;
+    display: grid;
+    place-items: center;
+    font-family: 'Simbiot', cursive;
+    font-size: 7rem;
+    text-transform: uppercase;
+    color: #ff1177;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    z-index: 10;
+    max-width: 90vw;  /* Add this if it's not already there */
+    word-wrap: break-word;
+}
+
+.glow-text .normal,
+.glow-text .phantom {
+    grid-area: 1 / 1;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: center;
+    /* white-space: nowrap; */
+}
+
+.glow-text .normal {
+    z-index: 11;
+    text-shadow: 
+        0 0 5px #ff1177,
+        0 0 10px #ff1177,
+        0 0 20px #ff1177,
+        0 0 40px rgba(255, 17, 119, 0.8),
+        0 0 60px rgba(255, 17, 119, 0.6),
+        0 0 80px rgba(255, 17, 119, 0.4);
+}
+
+.glow-text .phantom {
+    z-index: 10;
+    opacity: 0.5;
+    color: #ff1177;
+    pointer-events: none;
+}
+
+
+/* Hover Glitch Effect */
+.glow-text:hover {
+    animation: glitch 0.2s steps(2, end) infinite alternate;
+    cursor: none;
+}
+
+@keyframes glitch {
+    0% { transform: translateX(2px); }
+    100% { transform: translateX(-2px); }
+}
+
+/* Flicker Animation */
+@keyframes flicker {
+    0% { opacity: 1; text-shadow: 0 0 10px #ff1177, 0 0 20px #ff1177, 0 0 40px rgba(255, 17, 119, 0.8); }
+    50% { opacity: 0.8; text-shadow: 0 0 8px #ff1177, 0 0 16px #ff1177, 0 0 30px rgba(255, 17, 119, 0.6); }
+    100% { opacity: 1; text-shadow: 0 0 10px #ff1177, 0 0 20px #ff1177, 0 0 40px rgba(255, 17, 119, 0.8); }
+}
+
+/* Page Fade-In */
+.fade-in {
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+/* Transition Overlay */
+#transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(0,0,0,1) 10%, rgba(255,255,255,0) 90%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* Floating Effects */
+.floating {
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(255,255,255,0.5);
+    animation: floatAnim 4s ease-in-out infinite;
+    z-index: 5;
+}
+
+@keyframes floatAnim {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Particle Container */
+#particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 4;
+}
+
+.particle {
+    position: absolute;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+    opacity: 0;
+}
+
+/* Atmosphere Effects */
+#atmosphere-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+    opacity: 1;
+    pointer-events: none;
+}
+
+/* Fog */
+.fog {
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
+    animation: drift 60s linear infinite;
+    opacity: 1;
+    z-index: 3;
+    filter: blur(10px);
+}
+
+@keyframes drift {
+    0% { transform: translate(-25%, -25%); }
+    50% { transform: translate(25%, 25%); }
+    100% { transform: translate(-25%, -25%); }
+}
+
+/* Flickering Lights */
+.flicker {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 10%, transparent 70%);
+    animation: flickerAnim 6s infinite;
+    opacity: 0;
+    z-index: 4;
+}
+
+@keyframes flickerAnim {
+    0%, 100% { opacity: 0; }
+    20% { opacity: 0.05; }
+    22% { opacity: 0.03; }
+    25% { opacity: 0.08; }
+    50% { opacity: 0; }
+    70% { opacity: 0.05; }
+    72% { opacity: 0.1; }
+    100% { opacity: 0; }
+}
+
+/* Silhouette Skyline */
+.silhouette {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 30vh;
+    background: url('/static/images/silhouette_skyline.png') bottom center no-repeat;
+    background-size: cover;
+    opacity: 1;
+    z-index: 4;
+}
+
+#sigil-container {
+    position: fixed;
+    overflow: visible;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Sigil Navigation */
+.sigil-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Sigil Style
+.sigil {
+    position: absolute;
+    font-size: 3.2rem;
+    color: #ff1177;
+    text-shadow: 
+        0 0 12px #ff1177,
+        0 0 24px rgba(255, 17, 119, 0.8),
+        0 0 36px rgba(255, 255, 255, 0.4);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: floatSigil 5s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.5));
+    z-index: 12;
+    
+}
+
+.sigil:hover {
+    font-size: 3.5rem;
+    color: #fff;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 20px #ff00ff,
+        0 0 40px #ff1177,
+        0 0 60px #ff1177;
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+    animation: pulse 1.5s ease-in-out infinite;
+} */
+
+.sigil {
+    font-size: 3.2rem;
+    color: #ff1177;
+    text-shadow: 
+        0 0 12px #ff1177,
+        0 0 24px rgba(255, 17, 119, 0.8),
+        0 0 36px rgba(255, 255, 255, 0.4);
+    filter: drop-shadow(0 0 8px #ffffff88);
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    animation: floatSigil 5s ease-in-out infinite alternate;
+}
+
+.sigil:hover {
+    color: #ffccff;
+    transform: scale(1.2) rotate(5deg);
+    text-shadow:
+    0 0 5px #fff,
+    0 0 20px #ff00ff,
+    0 0 40px #ff1177,
+    0 0 60px #ff1177;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+    animation: floatSigil 5s ease-in-out infinite alternate;
+    
+}
+
+@keyframes floatSigil {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-15px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.sigil-tooltip {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.9rem;
+    color: #dcdcdc;
+    background: rgba(10, 10, 10, 0.6);
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(200, 200, 255, 0.3);
+    backdrop-filter: blur(4px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 99;
+}
+
+.sigil:hover .sigil-tooltip,
+.sigil.active .sigil-tooltip {
+    opacity: 1;
+    z-index: 999;
+    
+    /* transform: translateX(-50%) translateY(-5px); */
+}
+
+
+#divine-whisper {
+    position: fixed;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    font-family: 'Cinzel Decorative', serif;
+    color: rgba(255, 255, 255, 0.4);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    opacity: 0.7;
+    animation: whisperFloat 10s ease-in-out infinite;
+    z-index: 6;
+    pointer-events: none;
+    white-space: nowrap;
+}
+@keyframes whisperFloat {
+    0% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+    100% { transform: translateX(-50%) translateY(0); }
+}
+
+
+#transition-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.95));
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.glitch-transition {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        #fff 0px,
+        #fff 2px,
+        #000 2px,
+        #000 4px
+    );
+    opacity: 0;
+    transition: opacity 0.2s;
+    mix-blend-mode: difference;
+}
+
+
+/*           !!!!!About Page!!!!!            */
+
+.about-paragraph {
+    max-width: 800px;
+    margin: 20vh auto;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    line-height: 1.6;
+    padding: 0 2rem;
+    z-index: 999;
+}
+
+.back-home {
+    position: fixed;
+    bottom: 3vh;
+    right: 4vw;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+}
+
+.back-home:hover {
+    opacity: 1;
+    text-shadow: 0 0 10px white;
+}
+
+
+
+#sigil-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #0c0c10 0%, #000000 100%);
+}
