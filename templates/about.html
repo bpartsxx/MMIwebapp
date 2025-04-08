@@ -6,6 +6,65 @@
     <title>The Origin – Midnight Matchbox Incident</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='fonts/punkkid.css') }}">
+    <style>
+        .glow-text {
+            white-space: nowrap;
+}
+
+.glow-text span {
+    display: inline-block;
+    font-size: 3.5rem;
+    pointer-events: auto;
+}
+
+/* Return Sigil – bigger, bolder, hover reveal, preserved position */
+.sigil.back-home {
+    position: absolute;
+    bottom: 5vh;
+    right: 5vw;
+    font-size: 4rem;
+    font-family: 'Punk Kid', serif;
+    cursor: pointer;
+    color: rgba(255, 0, 123, 0.9);
+    text-shadow:
+        0 0 6px rgba(255, 200, 255, 0.6),
+        0 0 15px rgba(180, 100, 255, 0.5),
+        0 0 30px rgba(150, 80, 255, 0.3);
+    transition: transform 0.4s ease, text-shadow 0.4s ease;
+    pointer-events: auto;
+    line-height: 1;
+    white-space: nowrap;
+    z-index: 50;
+}
+
+/* Show "Return" only on hover with dreamy glow */
+.sigil.back-home::after {
+    content: " Return";
+    font-size: 1.2rem;
+    font-family: 'Space Mono', monospace;
+    opacity: 0;
+    margin-left: 0.5rem;
+    transition: opacity 0.4s ease;
+    vertical-align: middle;
+    color: rgba(255, 220, 255, 0.8);
+    text-shadow:
+        0 0 4px rgba(200, 100, 255, 0.5),
+        0 0 12px rgba(255, 180, 255, 0.4);
+}
+
+.sigil.back-home:hover {
+    transform: scale(1.2) rotate(-1.5deg);
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow:
+        0 0 8px rgba(255, 220, 255, 0.9),
+        0 0 20px rgba(200, 100, 255, 0.6),
+        0 0 40px rgba(150, 80, 255, 0.5);
+}
+
+.sigil.back-home:hover::after {
+    opacity: 1;
+}
+    </style>
 </head>
 <body>
     <div class="background-canvas"></div>
@@ -23,7 +82,7 @@
     </div>
 
     <div class="sigil back-home" data-page="/">
-        ☄ Return
+        ☄
     </div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

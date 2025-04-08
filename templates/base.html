@@ -47,7 +47,7 @@
     </div>
     <!-- <div id="divine-whisper">Whispers in the static...</div> -->
     <script type="module" src="/static/js/three_interactive_bg.js"></script>
-    <!-- <script src="{{ url_for('static', filename='js/three_background.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/three_background.js') }}"></script>
     <!-- <script src="{{ url_for('static', filename='js/threejs_scene.js') }}"></script> -->
     <script src="{{ url_for('static', filename='js/gsap_animations.js') }}"></script>
     <!-- <script src="{{ url_for('static', filename='js/three_effects.js') }}"></script> -->
@@ -55,115 +55,115 @@
    
    <!--           Navbar           -->
    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const sigils = document.querySelectorAll(".sigil");
-        const altSymbols = ["☽", "☉", "☾", "♄", "☿", "✙", "𖤐"];
+  document.addEventListener("DOMContentLoaded", () => {
+    const sigils = document.querySelectorAll(".sigil");
+    const altSymbols = ["☽", "☉", "☾", "♄", "☿", "✙", "𖤐"];
+
+    const normalText = document.querySelector(".glow-text .normal");
+    const phantomText = document.querySelector(".glow-text .phantom");
+    const paragraph = document.querySelector(".hero p");
     
-        const normalText = document.querySelector(".glow-text .normal");
-        const phantomText = document.querySelector(".glow-text .phantom");
-        const paragraph = document.querySelector(".hero p");
-        
-        const originalText = normalText.textContent;
-        const originalParagraph = paragraph.textContent;
-    
-        const fadeText = (text) => {
-            gsap.to([normalText, phantomText], {
-                opacity: 0,
-                duration: 0.3,
-                onComplete: () => {
-                    normalText.textContent = text;
-                    phantomText.textContent = text;
-                    gsap.to([normalText, phantomText], { opacity: 1, duration: 0.3 });
-                }
-            });
-        };
-    
-        const fadeParagraph = (text) => {
-            gsap.to(paragraph, {
-                opacity: 0,
-                duration: 0.3,
-                onComplete: () => {
-                    paragraph.textContent = text;
-                    gsap.to(paragraph, { opacity: 1, duration: 0.3 });
-                }
-            });
-        };
-    
-        const sigilContainer = document.getElementById("sigil-container");
-    
-        sigils.forEach(sigil => {
-            const newText = sigil.dataset.title;
-            const newDesc = sigil.dataset.desc;
-            const originalSymbol = sigil.innerHTML;
-    
-            // Title and paragraph update on hover
-            sigil.addEventListener("mouseenter", () => {
+    const originalText = normalText.textContent;
+    const originalParagraph = paragraph.textContent;
+
+    const fadeText = (text) => {
+        gsap.to([normalText, phantomText], {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => {
+                normalText.textContent = text;
+                phantomText.textContent = text;
+                gsap.to([normalText, phantomText], { opacity: 1, duration: 0.3 });
+            }
+        });
+    };
+
+    const fadeParagraph = (text) => {
+        gsap.to(paragraph, {
+            opacity: 0,
+            duration: 0.3,
+            onComplete: () => {
+                paragraph.textContent = text;
+                gsap.to(paragraph, { opacity: 1, duration: 0.3 });
+            }
+        });
+    };
+
+    const sigilContainer = document.getElementById("sigil-container");
+
+    sigils.forEach(sigil => {
+        const newText = sigil.dataset.title;
+        const newDesc = sigil.dataset.desc;
+        const originalSymbol = sigil.innerHTML;
+
+        // Title and paragraph update on hover (desktop)
+        sigil.addEventListener("mouseenter", () => {
+            fadeText(newText);
+            fadeParagraph(newDesc);
+            sigil.innerHTML = altSymbols[Math.floor(Math.random() * altSymbols.length)];
+        });
+
+        sigil.addEventListener("mouseleave", () => {
+            sigil.innerHTML = originalSymbol;
+            // Title & desc revert handled below
+        });
+
+        // Touch+hold (mobile)
+        let touchTimer;
+        sigil.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            touchTimer = setTimeout(() => {
                 fadeText(newText);
                 fadeParagraph(newDesc);
                 sigil.innerHTML = altSymbols[Math.floor(Math.random() * altSymbols.length)];
-            });
-    
-            sigil.addEventListener("mouseleave", () => {
-                sigil.innerHTML = originalSymbol;
-                // Don't revert text here — will handle on container leave
-            });
-    
-            // Touch+hold for mobile
-            let touchTimer;
-            sigil.addEventListener("touchstart", (e) => {
-                e.preventDefault();
-                touchTimer = setTimeout(() => {
-                    fadeText(newText);
-                    fadeParagraph(newDesc);
-                }, 300);
-            });
-    
-            sigil.addEventListener("touchend", () => {
-                clearTimeout(touchTimer);
-                fadeText(originalText);
-                fadeParagraph(originalParagraph);
-            });
-    
-            sigil.addEventListener("touchcancel", () => {
-                clearTimeout(touchTimer);
-                fadeText(originalText);
-                fadeParagraph(originalParagraph);
-            });
-    
-            // Random positioning
-            sigil.style.top = `${Math.random() * 70 + 20}%`;
-            sigil.style.left = `${Math.random() * 90}%`;
-    
-            // Navigation
-            sigil.addEventListener('click', () => {
-                const page = sigil.dataset.page;
-                window.location.href = `/${page}`;
-            });
+            }, 300);
         });
-    
-        // Revert title and paragraph only when fully leaving sigil area
-        const revertTexts = () => {
+
+        sigil.addEventListener("touchend", () => {
+            clearTimeout(touchTimer);
+            const page = sigil.dataset.page;
+            window.location.href = `/${page}`;
+        });
+
+        sigil.addEventListener("touchcancel", () => {
+            clearTimeout(touchTimer);
             fadeText(originalText);
             fadeParagraph(originalParagraph);
-        };
-    
-        sigilContainer.addEventListener("mouseleave", revertTexts);
+            sigil.innerHTML = originalSymbol;
+        });
+
+        // Random positioning
+        sigil.style.top = `${Math.random() * 70 + 20}%`;
+        sigil.style.left = `${Math.random() * 90}%`;
+
+        // Desktop navigation
+        sigil.addEventListener('click', () => {
+            const page = sigil.dataset.page;
+            window.location.href = `/${page}`;
+        });
     });
 
-    barba.init({
+    // Revert text when fully leaving the container
+    sigilContainer.addEventListener("mouseleave", () => {
+        fadeText(originalText);
+        fadeParagraph(originalParagraph);
+    });
+});
+
+barba.init({
     transitions: [{
         name: 'glitch-transition',
         async leave(data) {
             const glitch = document.querySelector('.glitch-transition');
             glitch.style.opacity = '1';
 
-            // Animate sigils (if any exist globally)
+            // Animate sigils
             document.querySelectorAll('.sigil').forEach(sigil => {
                 sigil.style.transform = `scale(1.5) rotate(${Math.random() * 360}deg)`;
                 sigil.style.transition = 'transform 0.3s ease';
             });
 
-            // Ambient whoosh
+            // Play ambient whoosh
             const whoosh = new Audio('/static/sfx/whoosh.mp3');
             whoosh.play();
 
